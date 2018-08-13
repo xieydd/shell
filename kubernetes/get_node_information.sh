@@ -10,3 +10,5 @@ for node in $nodes; do
   kubectl describe node "$node" | sed '1,/Non-terminated Pods/d'
   echo
 done
+# https://github.com/dpetzold/kube-resource-explorer/ 
+# ./resource-explorer -namespace kube-system -reverse -sort MemReq
