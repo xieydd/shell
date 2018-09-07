@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: xieyd #与下面的对应
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dafault
+  namespace: xieyd
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: xieyd #用户的用户空间
+  name: view #这个Role的名称
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["pods","service","deployments"] #这个用户可以使用的资源
+  verbs: ["get", "watch", "list","create"] #这个用户可以做的操作
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: read-pods #这个RoleBinding的名字
+  namespace: xieyd #用户的用户空间
+subjects:
+- kind: User #允许用户xieyd做下面roleRef的操作，即view
+  name: xieyd #用户名
+  apiGroup: rbac.authorization.k8s.io
+- kind: ServiceAccount #
+  name: default #service account的名称
+  namespace: xieyd #用户空间
+roleRef:
+  kind: Role #绑定的Role
+  name: view #绑定的Role的名称
+  apiGroup: rbac.authorization.k8s.io
