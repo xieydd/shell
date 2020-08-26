@@ -1,0 +1,26 @@
+global_defs {
+    router_id 98
+}
+vrrp_script chk_gitlab {
+    script "/etc/keepalived/gitlab_check.sh"
+    interval 2
+    weight -20
+}
+vrrp_instance VI_1 {
+    state BACKUP
+    interface ens192
+    virtual_router_id 33
+    mcast_src_ip 10.10.10.98
+    priority 90
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1111
+    }
+    track_script {
+        chk_gitlab
+    }
+    virtual_ipaddress {
+        10.10.10.211
+    }
+}

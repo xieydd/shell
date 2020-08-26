@@ -1,0 +1,1 @@
+*/5 * * * * rsync -avzrtlp --progress --delete --password-file=/etc/rsync.pass forgitlab@10.10.10.99::forgitlab /opt/nfs/gitlab01/data/git-data
